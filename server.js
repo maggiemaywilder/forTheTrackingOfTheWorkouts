@@ -4,10 +4,9 @@ const routes = require('./controllers/routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+require('dotenv').config();
 // do I need something like const db = require('./models')
 const mongoose = require('mongoose');
-const dbURI = `mongodb+srv://B3stpward:B3stpward@workoutdb.nkddx.mongodb.net/workoutDB?retryWrites=true&w=majority`;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -19,7 +18,7 @@ app.use(routes);
 
 
 
-mongoose.connect(dbURI, { 
+mongoose.connect(process.env.MONGODB_URI, { 
         useNewUrlParser: true, 
         useUnifiedTopology: true, 
         useFindAndModify: true, 
