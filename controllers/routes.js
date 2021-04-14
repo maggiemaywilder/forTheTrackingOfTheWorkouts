@@ -2,6 +2,7 @@ const router = require('express').Router();
 const path = require('path');
 
 const { Workout } = require('../models');
+const db = require('../models/Workout');
 
 // load home
 router.get('/', (req, res) => {
