@@ -33,7 +33,7 @@ var exerciseSchema = new Schema({
 var workoutSchema = new Schema({
     day: {
         type: Date,
-        default: Date.now
+        default: new Date().setDate(new Date().getDate())
     },
     exercises: [exerciseSchema]
 });

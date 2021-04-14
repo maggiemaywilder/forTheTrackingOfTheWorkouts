@@ -2,8 +2,6 @@ const router = require('express').Router();
 const path = require('path');
 
 const { Workout } = require('../models');
-const { db } = require('../models/Workout');
-
 
 // load home
 router.get('/', (req, res) => {
@@ -47,12 +45,33 @@ router.get('/stats', (req, res) => {
 
 // get workouts in range
 router.get('/api/workouts/range', (req, res) => {
-    Workout.aggregate([])
-    console.log(req);
+    Workout.aggregate([
+        {
+            $sort: {
+                day: -1,
+            },
+        },
+        {$limit: 7},
+        {
+            $addFields: {
+                totalDuration: {
+                    $sum: '$exercises.duration'
+                }
+            }
+        }
+    ])
+        .then((workoutRange) => {
+            workoutRange.reverse();
+            res.json(workoutRange);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+
 });
 
 
-// get last workout --- should this have 
+// get last workout
 router.get('/api/workouts', (req, res) => {
     Workout.find()
         .then((data) => {res.json(data)})
@@ -79,12 +98,7 @@ router.post('/api/workouts/:id', ( req, res) => {
                 console.log(err);
             }); 
 
-    } else {
-        console.log('here, line33')
-        };    
-    // });
-    
-    
+    } 
 });
 
 
